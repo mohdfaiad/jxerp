@@ -580,6 +580,7 @@ begin
 end;
 
 procedure     TBaseUIMasterDetailForm.doPrintPreview(Sender:TObject);
+var    buttonSelected: TModalResult;
 begin
    if (reportId <>'') and (frxReport <> nil) then
    begin
