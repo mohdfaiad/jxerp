@@ -1,0 +1,127 @@
+unit ReportDesign;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, cxControls, cxContainer, cxEdit, cxTextEdit,
+  ExtCtrls, ComCtrls, ImgList, ToolWin;
+
+type
+  TfrmReportDesigner = class(TForm)
+    Memo1: TMemo;
+    SQLDialog: TOpenDialog;
+    ToolBar1: TToolBar;
+    tbLoadSql: TToolButton;
+    ToolButton2: TToolButton;
+    tbGetReports: TToolButton;
+    ToolButton4: TToolButton;
+    ImageList1: TImageList;
+    GroupBox1: TGroupBox;
+    lbFiles: TListBox;
+    StatusBar1: TStatusBar;
+    GroupBox2: TGroupBox;
+    Splitter1: TSplitter;
+    cxParamVar: TcxTextEdit;
+    cxParamValue: TcxTextEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    ReportDialog: TOpenDialog;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton3: TToolButton;
+    procedure tbGetReportsClick(Sender: TObject);
+
+  private
+
+  FFileName: String;
+  function GetDirectoryName(Dir: String): String;
+  procedure FindFiles(APath: String);
+  end;
+
+var
+  frmReportDesigner: TfrmReportDesigner;
+
+implementation
+
+uses reportDataModule;
+
+{$R *.dfm}
+
+
+function TfrmReportDesigner.GetDirectoryName(Dir: String): String;
+{ This function formats the directory name so that it is a valid
+directory containing the back-slash (\) as the last character. }
+begin
+if Dir[Length(Dir)]<> '\' then
+Result := Dir+'\'
+else
+Result := Dir;
+end;
+
+procedure TfrmReportDesigner.FindFiles(APath: String);
+{ This is a procedure which is called recursively so that it finds the
+file with a specified mask through the current directory and its
+sub-directories. }
+var
+FSearchRec,
+DSearchRec: TSearchRec;
+FindResult: integer;
+
+function IsDirNotation(ADirName: String): Boolean;
+begin
+Result := (ADirName = '.') or (ADirName = '..');
+end;
+
+begin
+APath := GetDirectoryName(APath); // Obtain a valid directory name
+{ Find the first occurrence of the specified file name }
+FindResult := FindFirst(APath+FFileName,faAnyFile+faHidden+
+faSysFile+faReadOnly,FSearchRec);
+try
+{ Continue to search for the files according to the specified
+mask. If found, add the files and their paths to the listbox.}
+while FindResult = 0 do
+begin
+lbFiles.Items.Add(LowerCase(APath+FSearchRec.Name) );
+FindResult := FindNext(FSearchRec);
+end;
+
+{ Now search the sub-directories of this current directory. Do this
+by using FindFirst to loop through each subdirectory, then call
+FindFiles (this function) again. This recursive process will
+continue until all sub-directories have been searched. }
+FindResult := FindFirst(APath+'*.fr3', faDirectory, DSearchRec);
+
+while FindResult = 0 do
+begin
+if ((DSearchRec.Attr and faDirectory) = faDirectory) and not
+IsDirNotation(DSearchRec.Name) then
+FindFiles(APath+DSearchRec.Name); // Recursion here
+FindResult := FindNext(DSearchRec);
+end;
+finally
+FindClose(FSearchRec);
+end;
+end;
+
+
+procedure TfrmReportDesigner.tbGetReportsClick(Sender: TObject);
+begin
+{ This method starts the searching process. It first changes the cursor
+to an hourglass since the process may take awhile. It then clears the
+listbox and calls the FindFiles() function which will be called
+recursively to search through sub-directories }
+Screen.Cursor := crHourGlass;
+try
+    lbFiles.Items.Clear;
+    FFileName:= 'APInvoiceTax.fr3'  ;
+    FindFiles(ExtractFilePath(Application.ExeName)+'\Report\');
+finally
+Screen.Cursor := crDefault;
+end;
+end;
+
+end.

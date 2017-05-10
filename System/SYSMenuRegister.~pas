@@ -1,0 +1,305 @@
+unit SYSMenuRegister;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs,SystemMenu, cxLookAndFeelPainters, cxGraphics, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, DB, cxDBData,
+  Menus, StdCtrls, cxButtons, cxTextEdit, cxGridLevel, cxClasses,
+  cxControls, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGrid, cxMaskEdit, cxDropDownEdit, cxContainer,
+  cxGroupBox, ExtCtrls,dialogutils, cxButtonEdit, cxTL, cxCalendar,
+  cxInplaceContainer, cxDBTL, cxTLData, cxCheckBox, cxDBEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, wwdblook, Wwdbdlg, cxMemo;
+
+Type TRegisterMenuItem = class
+  public
+     reportId,menucaption,shortkey:string;
+end;
+
+type
+  TfrmSysMenuRegister = class(TForm)
+    cxGroupBox1: TcxGroupBox;
+    cxGroupBox2: TcxGroupBox;
+    Label1: TLabel;
+    cxGroupBox3: TcxGroupBox;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGrid1: TcxGrid;
+    cxComboBox2: TcxComboBox;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    cxRegistName: TcxTextEdit;
+    dsAvaliableMenu: TDataSource;
+    cxGrid1DBTableView1MENU_INDEX: TcxGridDBColumn;
+    cxGrid1DBTableView1MODULE_ID: TcxGridDBColumn;
+    cxGrid1DBTableView1MENU_ITEM_INDEX: TcxGridDBColumn;
+    cxGrid1DBTableView1FORM_CAPTION: TcxGridDBColumn;
+    cxGrid1DBTableView1ENABLED: TcxGridDBColumn;
+    cxGrid1DBTableView1UPDATE_DATE: TcxGridDBColumn;
+    cxGrid1DBTableView1UPDATE_USER: TcxGridDBColumn;
+    Label5: TLabel;
+    ControlBar1: TControlBar;
+    btSearch: TcxButton;
+    btRegist: TcxButton;
+    btCancel: TcxButton;
+    btDelete: TcxButton;
+    Label6: TLabel;
+    Label7: TLabel;
+    cxTextKey: TcxTextEdit;
+    Label8: TLabel;
+    cxTextReportId: TcxTextEdit;
+    Label9: TLabel;
+    cxGrid1DBTableView1Column3: TcxGridDBColumn;
+    cbSysModule: TcxDBLookupComboBox;
+    DataSource1: TDataSource;
+    gbQuery: TcxGroupBox;
+    cxQueryOpen: TcxButton;
+    OpenDialog1: TOpenDialog;
+    cxQueryMemo: TcxDBMemo;
+    procedure FormCreate(Sender: TObject);
+    procedure btSearchClick(Sender: TObject);
+    procedure btRegistClick(Sender: TObject);
+    procedure btCancelClick(Sender: TObject);
+    procedure cxGrid1DBTableView1Column1PropertiesButtonClick(
+      Sender: TObject; AButtonIndex: Integer);
+    procedure btDeleteClick(Sender: TObject);
+    procedure cxComboBox2PropertiesChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure cxQueryOpenClick(Sender: TObject);
+    procedure cxQuerySaveClick(Sender: TObject);
+    procedure cbSysModulePropertiesChange(Sender: TObject);
+  private
+    { Private declarations }
+    selectedModuleID,MenuName:String;
+    selectedMenuLevel:integer;
+      procedure initComponents;
+  public
+    function getSelectedModule:STRING;
+    function getSelectedMenuLevel:Integer;
+    function getRegistMenuName:string;
+    function getResiterMenuItem:TRegisterMenuItem;
+    procedure retreiveAvaliableMenu(ModuleID:String);
+    function registerMenu(ModuleID:String;menuLevel:integer):boolean;
+    procedure clearText;
+
+    { Public declarations }
+  end;
+
+var
+  frmSysMenuRegister: TfrmSysMenuRegister;
+
+implementation
+
+uses StrUtils,MenuLOGIC,CommonShareDataModule;
+
+{$R *.dfm}
+
+
+procedure TfrmSysMenuRegister.retreiveAvaliableMenu(ModuleID:String);
+   procedure handleExecption(e:exception);
+   begin
+        errorex('Could not read avaiable menu '+e.Message)  ;
+   end;
+begin
+  try
+      dsAvaliableMenu.DataSet.Close;
+      dsAvaliableMenu.DataSet.Filtered:=FALSE;
+      dsAvaliableMenu.DataSet.Filter:='MODULE_ID='+QuotedStr(moduleId)  ;
+      dsAvaliableMenu.DataSet.Filtered :=true;
+      dsAvaliableMenu.DataSet.Open;
+    // SystemMenuDM.qrySysMenuByModuleID.Close;
+     //SystemMenuDM.qrySysMenuByModuleID.ParamByName('Pmodule_id').Value:=moduleID;
+     //SystemMenuDM.qrySysMenuByModuleID.Open;
+  except on e:Exception do
+      handleExecption(e);
+  end;
+  //
+end;
+
+procedure TfrmSysMenuRegister.clearText;
+begin
+  cxRegistName.Clear;
+end;
+
+function TfrmSysMenuRegister.registerMenu(ModuleID:String;menuLevel:integer):boolean;
+var itemIndex :integer;
+    menuregisteritem:TRegisterMenuItem;
+begin
+  result:=false;
+   itemIndex := LogicDM.getNextMenuItemID(ModuleID,MENUlEVEL);
+   menuName :=    getRegistMenuName;
+   menuregisteritem := getResiterMenuItem;
+
+   if confirm('Are you confirm to regist['+menuName+']'+#13+'into '+selectedModuleID) =mrYes then
+   begin
+   if (itemIndex >-1) AND (menuName <> '' )THEN
+   begin
+      result :=LogicDM.registerMenu(ModuleID,menuLevel,itemIndex,menuName,menuregisteritem.reportId);
+      if result then
+      begin
+         info('Menu =['+menuName+']'+#13+' has completely registred');
+      end;
+      retreiveAvaliableMenu(ModuleID); //refresh
+
+   end
+   else
+   begin
+     warning('Could not get regist new menu. Menu name could not be blank');
+   end;
+   end;
+   if (menuregisteritem<> nil ) then menuregisteritem.Free;
+end;
+procedure TfrmSysMenuRegister.initComponents;
+begin
+     cbSysModule.DataBinding.DataSource.DataSet.Open;
+     CommonShareDM.tbSysModule.Open;
+     dsAvaliableMenu.DataSet := SystemMenuDM.tbSysMenu;
+     dsAvaliableMenu.DataSet.open;
+
+  //
+end;
+
+
+procedure TfrmSysMenuRegister.FormCreate(Sender: TObject);
+begin
+  inherited;
+  initComponents;
+
+end;
+
+function TfrmSysMenuRegister.getRegistMenuName:string;
+begin
+   result:=cxRegistName.Text;
+end;
+
+function TfrmSysMenuRegister.getSelectedModule:STRING;
+
+begin
+  //  selectedText :=
+    selectedModuleID :=datasource1.DataSet.Fieldbyname('MODULE_ID').AsString;
+    result := selectedModuleID;
+
+end;
+function TfrmSysMenuRegister.getSelectedMenuLevel:Integer;
+begin
+    result:=-1;
+   if (cxComboBox2.ItemIndex >-1) then
+   begin
+     selectedMenuLevel:=cxCombobox2.ItemIndex;
+     result:=  selectedMenuLevel;
+   end;
+end;
+
+procedure TfrmSysMenuRegister.btSearchClick(Sender: TObject);
+begin
+  retreiveAvaliableMenu(getSelectedModule);
+end;
+
+procedure TfrmSysMenuRegister.btRegistClick(Sender: TObject);
+begin
+  if (dsAvaliableMenu.DataSet.Active) then
+  begin
+    registerMenu(selectedModuleID,SelectedMenuLevel);
+    clearText;
+  end
+  else
+  begin
+     warning('No current view has been activate');
+  end;
+end;
+
+procedure TfrmSysMenuRegister.btCancelClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TfrmSysMenuRegister.cxGrid1DBTableView1Column1PropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  //info(dsAva)
+end;
+
+procedure TfrmSysMenuRegister.btDeleteClick(Sender: TObject);
+var deleteItem:TMatchedMenuItem;
+begin
+   deleteItem := TMatchedMenuItem.create(
+   dsAvaliableMenu.DataSet.FieldByName('MODULE_ID').AsString,
+   dsAvaliableMenu.DataSet.FieldByName('FORM_CAPTION').AsString,
+   dsAvaliableMenu.DataSet.FieldByName('MENU_INDEX').AsInteger,
+   dsAvaliableMenu.DataSet.FieldByName('MENU_ITEM_INDEX').AsInteger);
+   if confirm('Are you sure you want to delete ['+deleteItem.MenuName+']?')=mrYes then
+   begin
+      if (logicDM.deleteMenu(deleteItem.ModuleID,
+      deleteItem.menuIndex,
+      deleteItem.menuItemIndex)=true) then
+      begin
+         info(deleteItem.MenuName+' has been deleted');
+         retreiveAvaliableMenu(deleteItem.ModuleID); //refresh new list
+
+      end
+      else
+      begin
+        warning('Could note detete menu item. Please contract system administrator');
+      end
+   end
+   else
+   begin
+      info('Ignore action');
+   end;
+   deleteItem.Free;
+
+end;
+
+procedure TfrmSysMenuRegister.cxComboBox2PropertiesChange(Sender: TObject);
+begin
+      label6.Caption:=IntToStr(cxComboBox2.ItemIndex);
+     selectedMenuLevel:=cxComboBox2.ItemIndex;
+end;
+
+procedure TfrmSysMenuRegister.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+ cbSysModule.DataBinding.DataSource.DataSet.close;
+  ACTION:=CAFREE;
+end;
+
+function TfrmSysMenuRegister.getResiterMenuItem:TRegisterMenuItem;
+var item:TRegisterMenuItem;
+begin
+    item :=TRegisterMenuItem.Create;
+    item.menucaption :=cxRegistName.text;
+    item.shortkey :=cxTextKey.text;
+    item.reportId :=cxTextReportId.text;
+    result:=item;
+end;
+
+procedure TfrmSysMenuRegister.cxQueryOpenClick(Sender: TObject);
+begin
+  IF  OpenDialog1.Execute then
+  begin
+     cxQuerySave.Enabled:=true;
+     dsAvaliableMenu.DataSet.Edit;
+     cxQueryMemo.Lines.LoadFromFile(OpenDialog1.FileName);
+     dsAvaliableMenu.DataSet.Post;
+     info('Completly load new query and save');
+ // TODO: Load query string
+     //  cxQueryMemo.Properties.LookupItems
+  end
+end;
+
+procedure TfrmSysMenuRegister.cxQuerySaveClick(Sender: TObject);
+begin
+  //dsAvaliableMenu.DataSet.Edit;
+  dsAvaliableMenu.DataSet.Post;
+  cxQuerySave.Enabled:=false;
+end;
+
+procedure TfrmSysMenuRegister.cbSysModulePropertiesChange(Sender: TObject);
+begin
+   selectedModuleID:= datasource1.dataset.Fieldbyname('MODULE_ID').AsString;
+end;
+
+end.

@@ -1,0 +1,19 @@
+{TODO 5 -otinnarat -cSale Quotation : 
+-AR Receipt could not lookup for outstanding invoice, should have popup for outstanding invoices. 
+-then having wizard to allow to easily generage receipt.}
+{TODO 5 -otinnarat -cSale Quotation :
+-Sale Qoutation could not genrate invoice if sale quote line has more than one.
+-Could not generate the quote to invoice on the same day, system iwll be genreate duplicate invoice no . Should prompt for invoice No.}
+{DONE :
+-Create Direct Invoice From Sale Order
+-AR Debtor Duplicate debtor
+-AP Creditor Duplicate Creditor Code
+-Create Multiple company support (Low)}
+{DONE 4 -otinnarat -cFormmain : Add title click sort beheivor}
+{DONE 4 -cFormmain : Move procedue working in thread}
+{DONE -cGoodsReceiveNoteDM -otinnarat :
+GoodReceiveDataModule
+GRNDT Add before post check if order has already exists}
+{DONE 2 -otinnarat -cPurchaseOrder : KeyValueSearchForm}
+
+ 

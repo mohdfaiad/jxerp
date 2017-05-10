@@ -1,0 +1,36 @@
+
+FIRSTVIEWPC (Client)	Tue May 21 21:36:33 2013
+	INET/INET_connect: gethostbyname (K) failed, error code = 11001
+
+
+FIRSTVIEWPC (Client)	Tue May 21 21:36:37 2013
+	INET/INET_connect: gethostbyname (K) failed, error code = 11001
+
+
+FIRSTVIEWPC (Client)	Tue May 21 21:36:58 2013
+	INET/inet_error: connect errno = 10060
+
+
+FIRSTVIEWPC (Client)	Tue May 21 21:39:59 2013
+	INET/INET_connect: gethostbyname (K) failed, error code = 11001
+
+
+FIRSTVIEWPC (Client)	Tue May 21 21:40:04 2013
+	INET/INET_connect: gethostbyname (K) failed, error code = 11001
+
+
+FIRSTVIEWPC (Client)	Tue May 21 21:54:47 2013
+	INET/INET_connect: gethostbyname (K) failed, error code = 11001
+
+
+FIRSTVIEWPC (Client)	Tue May 21 21:54:51 2013
+	INET/INET_connect: gethostbyname (K) failed, error code = 11001
+
+
+LN5700001 (Client)	Thu May 07 23:18:47 2015
+	INET/inet_error: connect errno = 10061
+
+
+LN5700001 (Client)	Thu May 07 23:18:50 2015
+	INET/inet_error: connect errno = 10061
+

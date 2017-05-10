@@ -1,0 +1,602 @@
+inherited CommonShareDM: TCommonShareDM
+  OldCreateOrder = True
+  Left = 730
+  Top = 251
+  Height = 344
+  Width = 511
+  object TransactionType: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BeforePost = TransactionTypeBeforePost
+    OnNewRecord = TransactionTypeNewRecord
+    BufferChunks = 1000
+    CachedUpdates = False
+    FieldDefs = <
+      item
+        Name = 'TRX_TYPE'
+        DataType = ftString
+        Size = 2
+      end
+      item
+        Name = 'DESCRIPTION'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'DEFAULT_MODULE'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'UPDATE_USER'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'UPDATE_DATE'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'REQUIRE_REFERENCE'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'MODE'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'PREFIX'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'CURRENT_NO'
+        DataType = ftInteger
+      end>
+    IndexDefs = <
+      item
+        Name = 'RDB$PRIMARY107'
+        Fields = 'TRX_TYPE'
+        Options = [ixPrimary, ixUnique]
+      end>
+    IndexFieldNames = 'TRX_TYPE'
+    StoreDefs = True
+    TableName = 'TRANSACTIONTYPE'
+    Left = 40
+    Top = 8
+    object TransactionTypeTRX_TYPE: TIBStringField
+      DisplayLabel = 'Trx Prefix.'
+      DisplayWidth = 8
+      FieldName = 'TRX_TYPE'
+      Size = 2
+    end
+    object TransactionTypeDESCRIPTION: TIBStringField
+      DisplayLabel = 'Description'
+      DisplayWidth = 30
+      FieldName = 'DESCRIPTION'
+      Size = 60
+    end
+    object TransactionTypeDEFAULT_MODULE: TIBStringField
+      DisplayLabel = 'Default Module'
+      DisplayWidth = 60
+      FieldName = 'DEFAULT_MODULE'
+      Size = 60
+    end
+    object TransactionTypeUPDATE_DATE: TDateTimeField
+      DisplayLabel = 'Last Modified '
+      DisplayWidth = 18
+      FieldName = 'UPDATE_DATE'
+    end
+    object TransactionTypeREQUIRE_REFERENCE: TStringField
+      DefaultExpression = #39'N'#39
+      DisplayLabel = 'REQUIRE REFERENCE'
+      DisplayWidth = 1
+      FieldName = 'REQUIRE_REFERENCE'
+      Size = 1
+    end
+    object TransactionTypeMODE: TStringField
+      DisplayWidth = 1
+      FieldName = 'MODE'
+      Size = 1
+    end
+    object TransactionTypePREFIX: TIBStringField
+      DisplayWidth = 10
+      FieldName = 'PREFIX'
+      Size = 10
+    end
+    object TransactionTypeCURRENT_NO: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CURRENT_NO'
+    end
+    object TransactionTypeUPDATE_USER: TIBStringField
+      DisplayLabel = 'Last Modifier'
+      DisplayWidth = 10
+      FieldName = 'UPDATE_USER'
+      Visible = False
+      Size = 10
+    end
+  end
+  object tbSysModule: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BeforePost = tbSysModuleBeforePost
+    BufferChunks = 1000
+    CachedUpdates = False
+    TableName = 'SYS_MODULES'
+    Left = 40
+    Top = 80
+    object tbSysModuleMODULE_ID: TIBStringField
+      DisplayLabel = 'MODULE ID'
+      DisplayWidth = 4
+      FieldName = 'MODULE_ID'
+      Size = 4
+    end
+    object tbSysModuleMODULE_DESCRIPTION: TIBStringField
+      DisplayLabel = 'DESCRIPTION'
+      DisplayWidth = 60
+      FieldName = 'MODULE_DESCRIPTION'
+      Size = 60
+    end
+    object tbSysModuleUPDATE_DATE: TDateTimeField
+      DisplayLabel = 'Last Modified'
+      DisplayWidth = 18
+      FieldName = 'UPDATE_DATE'
+      Visible = False
+    end
+    object tbSysModuleUPDATE_USER: TIBStringField
+      DisplayWidth = 10
+      FieldName = 'UPDATE_USER'
+      Visible = False
+      Size = 10
+    end
+  end
+  object tbSysMenus: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BufferChunks = 1000
+    CachedUpdates = False
+    TableName = 'SYS_MENUS'
+    Left = 136
+    Top = 8
+    object tbSysMenusFORM_NAME: TIBStringField
+      FieldName = 'FORM_NAME'
+      Size = 25
+    end
+    object tbSysMenusMENU_INDEX: TSmallintField
+      FieldName = 'MENU_INDEX'
+    end
+    object tbSysMenusMODULE_ID: TIBStringField
+      FieldName = 'MODULE_ID'
+      Size = 4
+    end
+    object tbSysMenusMENU_ITEM_INDEX: TSmallintField
+      FieldName = 'MENU_ITEM_INDEX'
+    end
+    object tbSysMenusFORM_CAPTION: TIBStringField
+      FieldName = 'FORM_CAPTION'
+      Size = 60
+    end
+    object tbSysMenusENABLED: TIBStringField
+      FieldName = 'ENABLED'
+      Size = 1
+    end
+    object tbSysMenusUPDATE_DATE: TDateTimeField
+      FieldName = 'UPDATE_DATE'
+    end
+    object tbSysMenusUPDATE_USER: TIBStringField
+      FieldName = 'UPDATE_USER'
+      Size = 10
+    end
+    object tbSysMenusFORM_TAG: TSmallintField
+      FieldName = 'FORM_TAG'
+    end
+    object tbSysMenusHISTORY_CAPTION: TIBStringField
+      FieldName = 'HISTORY_CAPTION'
+      Size = 60
+    end
+    object tbSysMenusMAIN_MENU_NAME: TIBStringField
+      FieldName = 'MAIN_MENU_NAME'
+      Size = 30
+    end
+  end
+  object qryAdhoc: TIBQuery
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BufferChunks = 1000
+    CachedUpdates = False
+    Left = 144
+    Top = 80
+  end
+  object tbSysRole: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BufferChunks = 1000
+    CachedUpdates = False
+    TableName = 'SYS_GROUPS'
+    Left = 216
+    Top = 8
+    object tbSysRoleGROUP_ID: TIBStringField
+      FieldName = 'GROUP_ID'
+      Size = 4
+    end
+    object tbSysRoleGROUP_NAME: TIBStringField
+      FieldName = 'GROUP_NAME'
+      Size = 60
+    end
+    object tbSysRoleEDIT_FLAG: TIBStringField
+      FieldName = 'EDIT_FLAG'
+      Size = 1
+    end
+    object tbSysRoleDELETE_FLAG: TIBStringField
+      FieldName = 'DELETE_FLAG'
+      Size = 1
+    end
+    object tbSysRoleINSERT_FLAG: TIBStringField
+      FieldName = 'INSERT_FLAG'
+      Size = 1
+    end
+    object tbSysRoleUPDATE_USER: TIBStringField
+      FieldName = 'UPDATE_USER'
+      Size = 10
+    end
+    object tbSysRoleUPDATE_DATE: TDateTimeField
+      FieldName = 'UPDATE_DATE'
+    end
+    object tbSysRoleDEFAULT_MODULE_ID: TIBStringField
+      FieldName = 'DEFAULT_MODULE_ID'
+      Size = 4
+    end
+    object tbSysRoleADMIN_USER: TIBStringField
+      FieldName = 'ADMIN_USER'
+      Size = 1
+    end
+    object tbSysRoleEXECUTE_FLAG: TIBStringField
+      FieldName = 'EXECUTE_FLAG'
+      Size = 1
+    end
+    object tbSysRolePOST_FLAG: TIBStringField
+      FieldName = 'POST_FLAG'
+      Size = 1
+    end
+  end
+  object dsSysModule: TDataSource
+    DataSet = tbSysModule
+    Left = 40
+    Top = 136
+  end
+  object tbTaxRate: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BufferChunks = 1000
+    CachedUpdates = False
+    TableName = 'TAX_SCHEM_HD'
+    Left = 208
+    Top = 80
+    object tbTaxRateTAX_CD: TIBStringField
+      DisplayWidth = 2
+      FieldName = 'TAX_CD'
+      Size = 2
+    end
+    object tbTaxRateDESCS: TIBStringField
+      DisplayWidth = 45
+      FieldName = 'DESCS'
+      Size = 45
+    end
+    object tbTaxRateSCHEME_CD: TIBStringField
+      DisplayWidth = 2
+      FieldName = 'SCHEME_CD'
+      Visible = False
+      Size = 2
+    end
+    object tbTaxRateTAX_RATE: TFloatField
+      DisplayWidth = 10
+      FieldName = 'TAX_RATE'
+      Visible = False
+    end
+    object tbTaxRateUPDATE_USER: TIBStringField
+      DisplayWidth = 10
+      FieldName = 'UPDATE_USER'
+      Visible = False
+      Size = 10
+    end
+    object tbTaxRateUPDATE_DATE: TDateTimeField
+      DisplayWidth = 18
+      FieldName = 'UPDATE_DATE'
+      Visible = False
+    end
+    object tbTaxRateINCL: TIBStringField
+      DisplayWidth = 1
+      FieldName = 'INCL'
+      Visible = False
+      Size = 1
+    end
+  end
+  object tbWHTax: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BufferChunks = 1000
+    CachedUpdates = False
+    TableName = 'WITHHOLDING_TAX'
+    Left = 208
+    Top = 136
+    object tbWHTaxWHTAX_CODE: TIBStringField
+      DisplayWidth = 2
+      FieldName = 'WHTAX_CODE'
+      Size = 2
+    end
+    object tbWHTaxWHTAX_RATE: TFloatField
+      DisplayWidth = 10
+      FieldName = 'WHTAX_RATE'
+    end
+  end
+  object tbBank: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BufferChunks = 1000
+    CachedUpdates = False
+    TableName = 'BANK'
+    Left = 296
+    Top = 16
+    object tbBankBANK_CODE: TIBStringField
+      FieldName = 'BANK_CODE'
+      Size = 4
+    end
+    object tbBankBANK_NAME: TIBStringField
+      FieldName = 'BANK_NAME'
+      Size = 60
+    end
+    object tbBankBRANCH_NAME: TIBStringField
+      FieldName = 'BRANCH_NAME'
+      Size = 60
+    end
+    object tbBankREMARKS: TIBStringField
+      FieldName = 'REMARKS'
+      Size = 60
+    end
+    object tbBankUPDATE_USER: TIBStringField
+      FieldName = 'UPDATE_USER'
+      Size = 10
+    end
+    object tbBankUPDATE_DATE: TDateTimeField
+      FieldName = 'UPDATE_DATE'
+    end
+  end
+  object tbCompany: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BufferChunks = 1000
+    CachedUpdates = False
+    FieldDefs = <
+      item
+        Name = 'ENG_NAME'
+        DataType = ftString
+        Size = 150
+      end
+      item
+        Name = 'THAI_NAME'
+        DataType = ftString
+        Size = 150
+      end
+      item
+        Name = 'ADDRESS1'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'ADDRESS2'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'ADDRESS3'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'TH_ADDRESS1'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'TH_ADDRESS2'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'TH_ADDRESS3'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'POSTCODE'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'PROVINCE'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'TELEPHONE'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'FAX'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'LOGO'
+        DataType = ftBlob
+      end
+      item
+        Name = 'EMAIL'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'WEBSITE'
+        DataType = ftString
+        Size = 60
+      end
+      item
+        Name = 'TAXREGISTERED_ID'
+        DataType = ftString
+        Size = 25
+      end
+      item
+        Name = 'BRANCH_CODE'
+        DataType = ftString
+        Size = 5
+      end>
+    StoreDefs = True
+    TableName = 'COMPANY_PROFILE'
+    Left = 296
+    Top = 88
+    object tbCompanyENG_NAME: TIBStringField
+      FieldName = 'ENG_NAME'
+      Size = 150
+    end
+    object tbCompanyTHAI_NAME: TIBStringField
+      FieldName = 'THAI_NAME'
+      Size = 150
+    end
+    object tbCompanyADDRESS1: TIBStringField
+      FieldName = 'ADDRESS1'
+      Size = 100
+    end
+    object tbCompanyADDRESS2: TIBStringField
+      FieldName = 'ADDRESS2'
+      Size = 100
+    end
+    object tbCompanyADDRESS3: TIBStringField
+      FieldName = 'ADDRESS3'
+      Size = 100
+    end
+    object tbCompanyTH_ADDRESS1: TIBStringField
+      FieldName = 'TH_ADDRESS1'
+      Size = 100
+    end
+    object tbCompanyTH_ADDRESS2: TIBStringField
+      FieldName = 'TH_ADDRESS2'
+      Size = 100
+    end
+    object tbCompanyTH_ADDRESS3: TIBStringField
+      FieldName = 'TH_ADDRESS3'
+      Size = 100
+    end
+    object tbCompanyPOSTCODE: TIBStringField
+      FieldName = 'POSTCODE'
+      Size = 10
+    end
+    object tbCompanyPROVINCE: TIBStringField
+      FieldName = 'PROVINCE'
+      Size = 60
+    end
+    object tbCompanyTELEPHONE: TIBStringField
+      FieldName = 'TELEPHONE'
+      Size = 60
+    end
+    object tbCompanyFAX: TIBStringField
+      FieldName = 'FAX'
+      Size = 60
+    end
+    object tbCompanyLOGO: TBlobField
+      FieldName = 'LOGO'
+      Size = 8
+    end
+    object tbCompanyEMAIL: TIBStringField
+      FieldName = 'EMAIL'
+      Size = 60
+    end
+    object tbCompanyWEBSITE: TIBStringField
+      FieldName = 'WEBSITE'
+      Size = 60
+    end
+    object tbCompanyTAXREGISTERED_ID: TStringField
+      FieldName = 'TAXREGISTERED_ID'
+    end
+    object tbCompanyBRANCH_CODE: TIBStringField
+      FieldName = 'BRANCH_CODE'
+      Size = 5
+    end
+  end
+  object tbUser: TIBTable
+    Database = WarehouseDataManager.IBDatabase
+    Transaction = WarehouseDataManager.IBTransaction
+    BeforePost = tbUserBeforePost
+    BufferChunks = 1000
+    CachedUpdates = False
+    TableName = 'SYS_USERS'
+    Left = 200
+    Top = 184
+    object tbUserUSER_ID: TIBStringField
+      DisplayLabel = 'User ID'
+      DisplayWidth = 10
+      FieldName = 'USER_ID'
+      Size = 10
+    end
+    object tbUserUSER_NAME: TIBStringField
+      DisplayLabel = 'Name'
+      DisplayWidth = 60
+      FieldName = 'USER_NAME'
+      Size = 60
+    end
+    object tbUserGROUP_ID: TIBStringField
+      DisplayLabel = 'Group ID'
+      DisplayWidth = 4
+      FieldName = 'GROUP_ID'
+      Size = 4
+    end
+    object tbUserUPDATE_USER: TIBStringField
+      DisplayLabel = 'Update By'
+      DisplayWidth = 10
+      FieldName = 'UPDATE_USER'
+      Size = 10
+    end
+    object tbUserUPDATE_DATE: TDateTimeField
+      DisplayLabel = 'Last Modified'
+      DisplayWidth = 18
+      FieldName = 'UPDATE_DATE'
+    end
+    object tbUserACTIVED: TIBStringField
+      DisplayWidth = 1
+      FieldName = 'ACTIVED'
+      Size = 1
+    end
+    object tbUserCURRENT_PASSWORD: TIBStringField
+      DisplayWidth = 10
+      FieldName = 'CURRENT_PASSWORD'
+      Visible = False
+      Size = 10
+    end
+    object tbUserCONFIRM_PASSWORD: TIBStringField
+      DisplayWidth = 10
+      FieldName = 'CONFIRM_PASSWORD'
+      Visible = False
+      Size = 10
+    end
+    object tbUserDEFAULT_MODULE: TStringField
+      DisplayLabel = 'Default Login Menu'
+      DisplayWidth = 20
+      FieldName = 'DEFAULT_MODULE'
+      Visible = False
+      Size = 60
+    end
+    object tbUserOLD_PASSWORD: TIBStringField
+      DisplayWidth = 10
+      FieldName = 'OLD_PASSWORD'
+      Visible = False
+      Size = 10
+    end
+  end
+  object dsUser: TDataSource
+    DataSet = tbUser
+    Left = 320
+    Top = 184
+  end
+end

@@ -1,0 +1,20 @@
+Changed Log
+24.11.2012
+
++added:virtual and overoload method in abstractdatabrowse.pas for report preview.
++added: reportid for both tmatchedmenuitem and @table sys_menus(@see migrate sql script)
++modfy:login dialog add business unit, connection commbo
+
+
+13.12.2012
++added:printable support fuction in BaseMasterDetail.pas
++added:Quotation to Invoice function
++added:designable feature in AbstractDataBrowse.pas
++added:SQLScript
++added:formmain.pas with Report subtree
++added:preprint report in arinvoice windows.
+14-June-20155
++modify:(-AccountReceiveDataModule,AccountPayableDataModule):Improve bath text update for both Account receipt and account payable.
++modify:(ReceiptEntry.pas) change field order put witholding tax rate and tax rate up front.
+
+         -

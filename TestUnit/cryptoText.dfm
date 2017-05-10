@@ -1,0 +1,59 @@
+object frmTestEncrypt: TfrmTestEncrypt
+  Left = 237
+  Top = 245
+  Width = 544
+  Height = 429
+  Caption = 'TEST ENCRYPT/DECRYPE'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 120
+  TextHeight = 16
+  object Button1: TButton
+    Left = 168
+    Top = 24
+    Width = 75
+    Height = 25
+    Caption = 'Encrypt'
+    TabOrder = 0
+    OnClick = Button1Click
+  end
+  object Edit1: TEdit
+    Left = 40
+    Top = 24
+    Width = 121
+    Height = 24
+    TabOrder = 1
+    Text = 'Edit1'
+  end
+  object Memo1: TMemo
+    Left = 40
+    Top = 64
+    Width = 417
+    Height = 185
+    Lines.Strings = (
+      'Memo1')
+    TabOrder = 2
+  end
+  object Edit2: TEdit
+    Left = 40
+    Top = 256
+    Width = 121
+    Height = 24
+    TabOrder = 3
+    Text = 'Edit1'
+  end
+  object Button2: TButton
+    Left = 168
+    Top = 256
+    Width = 75
+    Height = 25
+    Caption = 'Decrypt'
+    TabOrder = 4
+    OnClick = Button2Click
+  end
+end

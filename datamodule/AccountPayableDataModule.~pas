@@ -1,0 +1,299 @@
+unit AccountPayableDataModule;
+
+{
+@author Tinnarat Aromsuk
+@date    2 Jan,2013
+@description AccountPayableDatamodule.pas
+    -are managing all AP transactions
+      -Payment voucher (None)
+
+}
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, AbstractDataModule, DB, IBCustomDataSet, IBTable, IBQuery,dialogutils,toThaiBath,
+  IBStoredProc;
+
+type
+  TAccountPayableDM = class(TAbstractDM)
+    tbCreditor: TIBTable;
+    tbPaymentHD: TIBTable;
+    tbPaymentDT: TIBTable;
+    dsPaymentD: TDataSource;
+    tbPaymentHDDOC_NO: TIBStringField;
+    tbPaymentHDDOC_DATE: TDateTimeField;
+    tbPaymentHDTRX_TYPE: TIBStringField;
+    tbPaymentHDCREDITOR_ACCT: TIBStringField;
+    tbPaymentHDREF_NO: TIBStringField;
+    tbPaymentHDREF_DATE: TDateTimeField;
+    tbPaymentHDDESCS: TIBStringField;
+    tbPaymentHDREMARK: TIBStringField;
+    tbPaymentHDBANK_CODE: TIBStringField;
+    tbPaymentHDCURRENCY_CODE: TIBStringField;
+    tbPaymentHDBATHTEXT: TIBStringField;
+    tbPaymentHDSTATUS: TIBStringField;
+    tbPaymentHDUPDATE_USER: TIBStringField;
+    tbPaymentHDUPDATE_DATE: TDateTimeField;
+    tbCreditorCREDITOR_ACCT: TIBStringField;
+    tbCreditorNAME: TIBStringField;
+    tbCreditorCREDITOR_TYPE: TIBStringField;
+    tbCreditorADDRESS1: TIBStringField;
+    tbCreditorADDRESS2: TIBStringField;
+    tbCreditorADDRESS3: TIBStringField;
+    tbCreditorTELPHONE: TIBStringField;
+    tbCreditorFAX_NO: TIBStringField;
+    tbCreditorSHORT_NAME: TIBStringField;
+    tbCreditorCREDIT_TERM: TSmallintField;
+    tbCreditorTAX_REGISTED_NO: TIBStringField;
+    tbCreditorBALANCE_AMT: TFloatField;
+    tbCreditorCREDIT_LIMIT: TFloatField;
+    tbCreditorCURRENCY_CODE: TIBStringField;
+    tbCreditorMAILADDR1: TIBStringField;
+    tbCreditorMAILADDR2: TIBStringField;
+    tbCreditorMAILADDR3: TIBStringField;
+    tbCreditorUPDATE_USER: TIBStringField;
+    tbCreditorUPDATE_DATE: TDateTimeField;
+    tbCreditorTAX_CD: TIBStringField;
+    tbCreditorPROVINCE: TIBStringField;
+    tbCreditorPOSTCODE: TIBStringField;
+    tbCreditorTH_ADDR1: TIBStringField;
+    tbCreditorTH_ADDR2: TIBStringField;
+    tbCreditorTH_ADDR3: TIBStringField;
+    tbCreditorTH_NAME: TIBStringField;
+    tbPaymentDTDOC_NO: TIBStringField;
+    tbPaymentDTDOC_DATE: TDateTimeField;
+    tbPaymentDTTRX_TYPE: TIBStringField;
+    tbPaymentDTCREDITOR_ACCT: TIBStringField;
+    tbPaymentDTLINE_NO: TSmallintField;
+    tbPaymentDTINVOICE_NO: TIBStringField;
+    tbPaymentDTINVOICE_DATE: TDateTimeField;
+    tbPaymentDTLINE_DESCS: TIBStringField;
+    tbPaymentDTLINE_REMARK: TIBStringField;
+    tbPaymentDTTAX_CODE: TIBStringField;
+    tbPaymentDTTAX_RATE: TFloatField;
+    tbPaymentDTTAX_AMOUNT: TFloatField;
+    tbPaymentDTWHTAX_CODE: TIBStringField;
+    tbPaymentDTWHTAX_RATE: TFloatField;
+    tbPaymentDTWHTAX_AMOUNT: TFloatField;
+    tbPaymentDTBASE_AMOUNT: TFloatField;
+    tbPaymentDTTOTAL_AMOUNT: TFloatField;
+    qryUnpostAPPayment: TIBQuery;
+    qryUnpostAPPaymentDOC_NO: TIBStringField;
+    qryUnpostAPPaymentDOC_DATE: TDateTimeField;
+    qryUnpostAPPaymentTRX_TYPE: TIBStringField;
+    qryUnpostAPPaymentCREDITOR_ACCT: TIBStringField;
+    qryUnpostAPPaymentREF_NO: TIBStringField;
+    qryUnpostAPPaymentREF_DATE: TDateTimeField;
+    qryUnpostAPPaymentDESCS: TIBStringField;
+    tbPaymentHDCreditorName: TStringField;
+    tbPaymentHDbankname: TStringField;
+    tbPaymentHDCurrency: TStringField;
+    qryAdhoc: TIBQuery;
+    spPostPayment: TIBStoredProc;
+    qryUnpostAPPaymentREMARK: TIBStringField;
+    qryUnpostAPPaymentBANK_CODE: TIBStringField;
+    qryUnpostAPPaymentCURRENCY_CODE: TIBStringField;
+    qryUnpostAPPaymentBATHTEXT: TIBStringField;
+    qryUnpostAPPaymentSTATUS: TIBStringField;
+    qryUnpostAPPaymentUPDATE_USER: TIBStringField;
+    qryUnpostAPPaymentUPDATE_DATE: TDateTimeField;
+    qryUnpostAPPaymentDOC_NO1: TIBStringField;
+    qryUnpostAPPaymentDOC_DATE1: TDateTimeField;
+    qryUnpostAPPaymentTRX_TYPE1: TIBStringField;
+    qryUnpostAPPaymentCREDITOR_ACCT1: TIBStringField;
+    qryUnpostAPPaymentLINE_NO: TSmallintField;
+    qryUnpostAPPaymentINVOICE_NO: TIBStringField;
+    qryUnpostAPPaymentINVOICE_DATE: TDateTimeField;
+    qryUnpostAPPaymentLINE_DESCS: TIBStringField;
+    qryUnpostAPPaymentLINE_REMARK: TIBStringField;
+    qryUnpostAPPaymentTAX_CODE: TIBStringField;
+    qryUnpostAPPaymentTAX_RATE: TFloatField;
+    qryUnpostAPPaymentTAX_AMOUNT: TFloatField;
+    qryUnpostAPPaymentWHTAX_CODE: TIBStringField;
+    qryUnpostAPPaymentWHTAX_RATE: TFloatField;
+    qryUnpostAPPaymentWHTAX_AMOUNT: TFloatField;
+    qryUnpostAPPaymentBASE_AMOUNT: TFloatField;
+    qryUnpostAPPaymentTOTAL_AMOUNT: TFloatField;
+    procedure tbPaymentHDTRX_TYPEChange(Sender: TField);
+    procedure tbPaymentHDCREDITOR_ACCTChange(Sender: TField);
+    procedure tbPaymentHDNewRecord(DataSet: TDataSet);
+    procedure tbPaymentHDBeforePost(DataSet: TDataSet);
+    procedure tbPaymentDTNewRecord(DataSet: TDataSet);
+    procedure tbPaymentDTTAX_CODEChange(Sender: TField);
+    procedure tbPaymentDTTAX_RATEChange(Sender: TField);
+    procedure tbPaymentDTWHTAX_CODEChange(Sender: TField);
+    procedure tbPaymentDTWHTAX_RATEChange(Sender: TField);
+    procedure tbPaymentDTAfterPost(DataSet: TDataSet);
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure AmountToText;
+    function postPayment(docNo:String; docDate:TDateTime):boolean;
+  end;
+
+var
+  AccountPayableDM: TAccountPayableDM;
+
+implementation
+
+uses warehouseDM,MASTERSETUPDataModule,commonsharedatamodule;
+
+{$R *.dfm}
+
+procedure TAccountPayableDM.tbPaymentHDTRX_TYPEChange(Sender: TField);
+begin
+ tbPaymentHDDESCS.AsString :=CommonShareDM.TransactionType.Fieldbyname('DESCRIPTION').AsString;
+
+end;
+
+procedure TAccountPayableDM.tbPaymentHDCREDITOR_ACCTChange(Sender: TField);
+begin
+  tbPaymentHDCURRENCY_CODE.AsString :=  tbPaymentHDCurrency.AsString;
+
+end;
+
+procedure TAccountPayableDM.tbPaymentHDNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+
+
+  dataset.Fieldbyname('DOC_DATE').AsDateTime:=DATE;
+  dataset.Fieldbyname('STATUS').AsString :='N';
+end;
+
+procedure TAccountPayableDM.tbPaymentHDBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  activeUser :=WarehouseDataManager.User.userid;
+  updateModifiedRecord(dataset);
+end;
+
+procedure TAccountPayableDM.tbPaymentDTNewRecord(DataSet: TDataSet);
+begin
+  with dataset do
+  begin
+     Fieldbyname('line_no').AsInteger := getNextLine(qryAdhoc,dataSet.Fieldbyname('doc_no').AsString,'doc_no','AP_PAYMENT_DT');
+     FieldByName('TAX_AMOUNT').AsFloat :=0;
+     FieldByName('WHTAX_AMOUNT').AsFloat :=0;
+     FieldByName('TAX_RATE').AsFloat := 0;
+     FieldByName('BASE_AMOUNT').AsFloat :=0;
+     FieldByName('TOTAL_AMOUNT').AsFloat :=0;
+  end;
+
+end;
+
+procedure TAccountPayableDM.tbPaymentDTTAX_CODEChange(Sender: TField);
+begin
+   if (sender.AsString <> '') then
+   begin
+    tbPaymentDTTAX_RATE.AsFloat := CommonShareDM.tbTaxRateTAX_RATE.AsFloat;
+   end;
+
+
+end;
+
+procedure TAccountPayableDM.tbPaymentDTTAX_RATEChange(Sender: TField);
+begin
+  if (sender.AsFloat <> 0) then
+  begin
+      with   tbPaymentDT do
+      begin
+         Fieldbyname('TAX_AMOUNT').AsFloat := sender.AsFloat/100*FieldByName('BASE_AMOUNT').AsFloat;
+         FieldByName('TOTAL_AMOUNT').AsFloat := FieldByName('BASE_AMOUNT').AsFloat +    Fieldbyname('WHTAX_AMOUNT').AsFloat +  Fieldbyname('TAX_AMOUNT').AsFloat;
+
+      end;
+  end;
+
+end;
+
+procedure TAccountPayableDM.tbPaymentDTWHTAX_CODEChange(Sender: TField);
+begin
+   if (Sender.AsString <> '') THEN
+   BEGIN
+     tbPaymentDTWHTAX_RATE.AsFloat :=  CommonShareDM.tbWHTaxWHTAX_RATE.AsFloat;
+   END;
+
+end;
+
+procedure TAccountPayableDM.tbPaymentDTWHTAX_RATEChange(Sender: TField);
+begin
+  if (sender.AsFloat <> 0) then
+  begin
+      with   tbPaymentDT do
+      begin
+         Fieldbyname('WHTAX_AMOUNT').AsFloat := sender.AsFloat/100*FieldByName('BASE_AMOUNT').AsFloat;
+         FieldByName('TOTAL_AMOUNT').AsFloat := FieldByName('BASE_AMOUNT').AsFloat +     Fieldbyname('TAX_AMOUNT').AsFloat;
+      end;
+  end;
+
+end;
+
+procedure TAccountPayableDM.tbPaymentDTAfterPost(DataSet: TDataSet);
+begin
+  commit;
+  AmountToText;
+
+end;
+
+
+procedure  TAccountPayableDM.AmountToText;
+
+  procedure handleException(e:exception);
+  begin
+    warning('Fail: update invoice header bath text'+e.Message);
+  end;
+  function getTotalPaymentAmount(doc_no:string):DOUBLE;
+  begin
+     result:=0;
+     try
+
+         qryAdhoc.close;
+         qryAdhoc.SQL.Text:= 'select sum(total_amount) from ap_payment_dt where doc_no='+quotedStr(doc_no);
+         qryAdhoc.Open;
+         result:=qryAdhoc.Fields[0].AsFloat;
+
+     except on e:exception do handleException(e);
+     end;
+  end;
+begin
+ if (tbPaymentHD.active) then
+ begin
+  tbPaymentHD.Edit;
+  tbPaymentHD.FieldByName('BATHTEXT').AsString:= TBahtStang.Create.NumericToBahtStang(getTotalPaymentAmount(tbPaymentHD.fieldByName('doc_no').AsString));
+  tbPaymentHD.Post;
+  commit;
+ end;
+
+END;
+
+procedure TAccountPayableDM.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+  setDisplayFormat;
+
+end;
+
+function TAccountPayableDM.postPayment(docNo:String; docDate:TDateTime):boolean;
+  procedure handleExecption(e:exception);
+  begin
+     result:=false;
+     errorEx('Could not post ap payment '+e.Message);
+  end;
+begin
+ try
+   spPostPayment.Close;
+   spPostPayment.ParamByName('adoc_no').Value:=docNo;
+   spPostPayment.ParamByName('adoc_date').Value := docDate;
+   spPostPayment.ParamByName('aupdate_user').Value := WarehouseDataManager.User.userid;
+   spPostPayment.ExecProc;
+   result:=true;
+ except on e:exception   do
+   handleExecption(e);
+ end;
+
+end;
+
+end.
