@@ -679,7 +679,7 @@ begin
   tbInvoiceHD.Post;    }
   try
     qryAdhoc.close;
-   qryAdhoc.SQL.Text:= 'update ar_receive_hd set BATHTEXT='+quotedStr(TBahtStang.Create.NumericToBahtStang(updateAmount))+
+   qryAdhoc.SQL.Text:= 'update ar_invoice_hd set BATHTEXT='+quotedStr(TBahtStang.Create.NumericToBahtStang(updateAmount))+
                                ' where doc_no='+quotedStr(docno) ;
    qryAdhoc.ExecSQL;
       commit;
